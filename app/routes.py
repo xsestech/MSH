@@ -9,14 +9,11 @@ import logging
 
 # Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import request
-from app import app
-from app.models import Devices
-from app import db
 
-class State():
-    state = 0
-    currentState = 0
-    id = 0
+from app import app
+from app import db
+from app.models import Devices
+
 logging.basicConfig(level=logging.DEBUG)
 
 # Хранилище данных о сессиях.
@@ -25,7 +22,6 @@ sessionStorage = {}
 
 # Задаем параметры приложения Flask.
 @app.route("/", methods=['POST'])
-
 def main():
     # Функция получает тело запроса и возвращает ответ.
     logging.info('Request: %r', request.json)
@@ -47,54 +43,9 @@ def main():
         ensure_ascii=False,
         indent=2
     )
-# Функция для непосредственной обработки диалога.
 
 
-def handle_dialog(req, res):
-    user_id = req['session']['user_id']
-    # Обрабатываем ответ пользователя.
-    if req['request']['original_utterance'].lower() in [
-        'включи',
-        'включить',
-    ]:
-        # Пользователь согласился, отправляем запрос на .
-        res['response']['text'] = 'Включаю'
-        State.state = 1
-        return
-
-    if req['request']['original_utterance'].lower() in [
-        'выключи',
-        'выключить'
-    ]:
-        res['response']['text'] = 'Выключаю'
-        State.state = 0
-        return
-    if req['request']['original_utterance'].lower() in [
-        'состояние'
-    ]:
-        if State.currentState == 0:
-            res['response']['text'] = 'Выключено'
-        else:
-            res['response']['text'] = 'Включено'
-        return
-    # Функция возвращает две подсказки для ответа.
-
-
-def get_suggests(user_id, sugest_text_1, sugest_text_2):
-    session = sessionStorage[user_id]
-
-    # Выбираем две первые подсказки из массива.
-    suggests = [
-        {'title': sugest_text_1, 'hide': True},
-        {'title': sugest_text_2, 'hide': True}
-    ]
-
-    # Убираем первую подсказку, чтобы подсказки менялись каждый раз.
-
-
-    return suggests
-
-def handle(req,res):
+def handle(req, res):
     if req["request"]["nlu"]["tokens"][0].lower() in [
         'включи',
         'влючить'
@@ -115,8 +66,8 @@ def handle(req,res):
         db.session.commit()
 
 
-@app.route('/esp8266/<id>/<name>/<type>/<state>', methods=['GET'])
-def esp8266(id, state, type, name):
+@app.route('/esp8266/<dev_id>/<name>/<dev_type>/<state>', methods=['GET'])
+def esp8266(dev_id, state, dev_type, name):
     device = Devices.query.filter_by(dev_id=id).first()
     print(device.state)
     if state == "0":
@@ -124,13 +75,13 @@ def esp8266(id, state, type, name):
     if state == "1":
         state = True
     if device is None:
-        dev = Devices(dev_id=id, type=type, prev_state=state, name=name)
+        dev = Devices(dev_id=dev_id, type=dev_type, prev_state=state, name=name)
         db.session.add(dev)
         db.session.commit()
         return "hi"
     else:
         device.prev_state = state
-        if device.state == True:
+        if device.state:
             dev_state = 1
         else:
             dev_state = 0
