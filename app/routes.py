@@ -1,4 +1,3 @@
-
 # coding: utf-8
 # Импортирует поддержку UTF-8.
 from __future__ import unicode_literals
@@ -46,36 +45,38 @@ def main():
 
 
 def handle(req, res):
+    # Эта функция обрабатывает запросы пользователя.
     if req["request"]["nlu"]["tokens"][0].lower() in [
         'включи',
         'влючить'
-    ]:
-        name = req["request"]["nlu"]["tokens"][1].lower()
-        device = Devices.query.filter_by(name=name).first()
+    ] and req["request"]["nlu"]["tokens"][1].lower() in ['лампу']:
+        name = req["request"]["nlu"]["tokens"][2].lower()
+        device = Devices.query.filter_by(name=name, type='lamp').first()
         device.state = True
         res['response']['text'] = 'Включаю ' + str(device.state)
         db.session.commit()
     if req["request"]["nlu"]["tokens"][0].lower() in [
         'выключи',
         'вылючить'
-    ]:
+    ] and req["request"]["nlu"]["tokens"][1].lower() in ['лампу']:
         res['response']['text'] = 'Выключаю'
-        name = req["request"]["nlu"]["tokens"][1].lower()
+        name = req["request"]["nlu"]["tokens"][2].lower()
         device = Devices.query.filter_by(name=name).first()
         device.state = False
         db.session.commit()
 
 
-@app.route('/esp8266/<dev_id>/<name>/<dev_type>/<state>', methods=['GET'])
-def esp8266(dev_id, state, dev_type, name):
+@app.route('/esp8266/<id>/<name>/<dev_type>/<state>', methods=['GET'])
+def esp8266(id, state, dev_type, name):
+    # Эта функция раьотает  с устройством
+    dev_state = 0
     device = Devices.query.filter_by(dev_id=id).first()
-    print(device.state)
     if state == "0":
         state = False
     if state == "1":
         state = True
     if device is None:
-        dev = Devices(dev_id=dev_id, type=dev_type, prev_state=state, name=name)
+        dev = Devices(dev_id=id, type=dev_type, prev_state=state, name=name)
         db.session.add(dev)
         db.session.commit()
         return "hi"
@@ -83,10 +84,7 @@ def esp8266(dev_id, state, dev_type, name):
         device.prev_state = state
         if device.state:
             dev_state = 1
-        else:
+        if device.state == False:
             dev_state = 0
         db.session.commit()
         return str(dev_state)
-
-    # State.id = id
-    # State.currentState = state
