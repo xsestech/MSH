@@ -10,7 +10,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/MSH_master$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1552231521274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MSH_master$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1552365192391" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -56,8 +56,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/routes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="101" column="19" selection-start-line="101" selection-start-column="19" selection-end-line="101" selection-end-column="19" />
+            <state relative-caret-position="182">
+              <caret line="101" column="18" selection-start-line="101" selection-start-column="18" selection-end-line="101" selection-end-column="18" />
               <folding>
                 <element signature="e#47#86#0" expanded="true" />
               </folding>
@@ -97,10 +97,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="10" />
-    <option name="y" value="20" />
-    <option name="width" value="1346" />
-    <option name="height" value="688" />
+    <option name="width" value="1360" />
+    <option name="height" value="768" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -194,7 +192,7 @@
       <workItem from="1552222515536" duration="6810000" />
       <workItem from="1552232487383" duration="897000" />
       <workItem from="1552242005259" duration="555000" />
-      <workItem from="1552243231734" duration="1429000" />
+      <workItem from="1552243231734" duration="2867000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fix">
       <created>1552232864707</created>
@@ -221,7 +219,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9691000" />
+    <option name="totallyTimeSpent" value="11129000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -298,8 +296,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/routes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="101" column="19" selection-start-line="101" selection-start-column="19" selection-end-line="101" selection-end-column="19" />
+        <state relative-caret-position="182">
+          <caret line="101" column="18" selection-start-line="101" selection-start-column="18" selection-end-line="101" selection-end-column="18" />
           <folding>
             <element signature="e#47#86#0" expanded="true" />
           </folding>
