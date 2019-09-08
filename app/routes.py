@@ -47,35 +47,37 @@ def main():
 
 
 def handle(req, res):
-    # Эта функция обрабатывает запросы пользователя.
-    if req["request"]["nlu"]["tokens"][0].lower() in [
-        'включи',
-        'включить'
-    ] and req["request"]["nlu"]["tokens"][1].lower() in ['лампу']:
-        name = req["request"]["nlu"]["tokens"][2].lower()
-        device = Devices.query.filter_by(name=name, type='lamp').first()
-        device.state = True
-        res['response']['text'] = 'Включаю'
-        db.session.commit()
-    if req["request"]["nlu"]["tokens"][0].lower() in [
-        'выключи',
-        'выключить'
-    ] and req["request"]["nlu"]["tokens"][1].lower() in ['лампу']:
-        res['response']['text'] = 'Выключаю'
-        name = req["request"]["nlu"]["tokens"][2].lower()
-        device = Devices.query.filter_by(name=name).first()
-        device.state = False
-        db.session.commit()
-    if req["request"]["nlu"]["tokens"][0].lower() in ['таймер']:
-        dev_name = req["request"]["nlu"]["tokens"][2].lower()
-        on_hour = req["request"]["nlu"]["entities"][0]['value']['hour']
-        on_minute = req["request"]["nlu"]["entities"][0]['value']['minute']
-        off_hour = req["request"]["nlu"]["entities"][1]['value']['hour']
-        off_minute = req["request"]["nlu"]["entities"][1]['value']['minute']
-        timer = Timer(dev_name=dev_name, on_minute=on_minute, on_hour=on_hour, off_hour=off_hour, off_minute=off_minute)
-        db.session.add(timer)
-        db.session.commit()
-
+	try:
+   	 # Эта функция обрабатывает запросы пользователя.
+	    if req["request"]["nlu"]["tokens"][0].lower() in [
+	        'включи',
+	        'включить'
+	    ] and req["request"]["nlu"]["tokens"][1].lower() in ['лампу']:
+	        name = req["request"]["nlu"]["tokens"][2].lower()
+	        device = Devices.query.filter_by(dev_name=name, type='lamp').first()
+	        device.state = True
+	        res['response']['text'] = 'Включаю'
+	        db.session.commit()
+	    if req["request"]["nlu"]["tokens"][0].lower() in [
+	        'выключи',
+	        'выключить'
+	    ] and req["request"]["nlu"]["tokens"][1].lower() in ['лампу']:
+	        res['response']['text'] = 'Выключаю'
+	        name = req["request"]["nlu"]["tokens"][2].lower()
+	        device = Devices.query.filter_by(dev_name=name).first()
+	        device.state = False
+	        db.session.commit()
+	    if req["request"]["nlu"]["tokens"][0].lower() in ['таймер']:
+	        dev_name = req["request"]["nlu"]["tokens"][2].lower()
+	        on_hour = req["request"]["nlu"]["entities"][0]['value']['hour']
+	        on_minute = req["request"]["nlu"]["entities"][0]['value']['minute']
+	        off_hour = req["request"]["nlu"]["entities"][1]['value']['hour']
+	        off_minute = req["request"]["nlu"]["entities"][1]['value']['minute']
+	        timer = Timer(dev_name=dev_name, on_minute=on_minute, on_hour=on_hour, off_hour=off_hour, off_minute=off_minute)
+	        db.session.add(timer)
+	        db.session.commit()
+	except BaseException:
+		res['response']['text'] = "Неправильный запрос"
 
 def times():
     timer = Timer.query.all()
@@ -101,7 +103,7 @@ def esp8266(dev_id, state, dev_type, name):
     if state == "1":
         state = True
     if device is None:
-        dev = Devices(dev_id=id, type=dev_type, prev_state=state, dev_name=name)
+        dev = Devices(dev_id=dev_id, type=dev_type, prev_state=state, dev_name=name)
         db.session.add(dev)
         db.session.commit()
         return "hi"
